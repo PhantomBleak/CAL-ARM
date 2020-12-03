@@ -1,11 +1,11 @@
 `timescale 1ns/1ns
 
-module PCRegister(freeze, rst, clk, inPC, outPC);
+module PCRegister(rst, clk, freeze, inPC, outPC);
 
 input freeze, rst, clk;
-input [9:0]inPC;
+input [31:0]inPC;
 
-output reg [9:0]outPC;
+output logic [31:0]outPC;
 
 always@(posedge clk)begin
 	if(rst)

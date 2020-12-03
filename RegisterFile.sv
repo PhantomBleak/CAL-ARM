@@ -1,33 +1,27 @@
-module RegisterFile(clk,
-					rst,
-					src1,
-					src2, 
-					Dest_wb,
-					Result_WB,
-					wrtieBackEn,
-					reg1,
-					reg2);
-input clk, rst;
-input [3:0] src1, src2, Dest_wb;
-input[31:0] Result_WB,
-input wrtieBackEn;
-logic [31:0] rfile[15:0];
-output [31:0] reg1, reg2;
+module registerFile(rst, clk, WB_EN, RnAddress, RmAddress, RdAddress, WBVal, RnVal, RmVal);
 
-assign rfile[0] = 32'b0;
+	input clk,rst, WB_EN;
+	input [3:0]RnAddress, RmAddress, RdAddress;
+	input [31:0]WBVal;
 
-always@(*)begin
-	reg1 <= rfile[src1];
-	reg2 <= rfile [src2];	
-end
+	output [31:0]RnVal, RmVal;
 
-always@(negedge)begin
-	if(wrtieBackEn && Dest_wb != 0)
-		begin
-			rfile[Dest_wb] = Result_WB;
+	logic [31:0] RegFile[0:15];
+
+	assign RnVal = RegFile[RnAddress];
+	assign RmVal = RegFile[RmAddress];
+
+	always@(posedge clk)begin
+		if(rst)begin
+			integer j;
+			for(j = 0; j < 16; j = j + 1)
+				RegFile[j] = 0;
+			end
 		end
-end
+
+	always@(negedge clk) begin
+		if(WB_EN)
+			RegFile[RdAddress] <= WBVal;
+		end
 
 endmodule
-
-

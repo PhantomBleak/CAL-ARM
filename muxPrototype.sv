@@ -2,7 +2,7 @@
 
 module muxPrototype(in1, in2, selector, out1);
 
-parameter WIDTH = 10;
+parameter WIDTH = 32;
 
 input [WIDTH-1:0] in1;
 input [WIDTH-1:0] in2;

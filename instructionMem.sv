@@ -2,7 +2,7 @@
 
 module instructionMem(address, instruction);
 
-input [9:0]address;
+input [31:0]address;
 
 output [31:0]instruction;
 

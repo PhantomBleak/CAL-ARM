@@ -1,10 +1,10 @@
-module ConditionCheck(Z, C, N, V, opcode, out);
+module ConditionCheck(Z, C, N, V, condition, out);
 input Z, C, N, V;
-input [3:0] opcode;
+input [3:0] condition;
 output logic out;
 
 always @(*)begin
-	case(opcode)
+	case(condition)
 	4'b0000: out <= Z;
 	4'b0001: out <= !Z;
 	4'b0010: out <= C;
@@ -21,5 +21,5 @@ always @(*)begin
 	4'b1101: out <= (Z == 1) || (N != V);
 	4'b1110: out <= 1;
 	endcase
-end	
+end
 endmodule
