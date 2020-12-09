@@ -1,21 +1,16 @@
 `timescale 1ns/1ns
 
-module pipelineTB();
+module PipelineTB();
   logic clk = 0;
   logic rst = 0;
-  logic start = 0;
-  logic done;
 
-  pipeline DUT(clk, rst, start, done);
+  pipeline DUT(rst, clk);
 
-  parameter PERIOD = 15;
-
-  always #PERIOD clk = ~clk;
+  always #50 clk = ~ clk;
 
   initial begin
-    #5 rst = 1;
-    #20 rst = 0;
-    #400 $stop;
+    #20 rst = 1;
+    #80 rst = 0;
+    #50000 $stop;
   end
-
 endmodule

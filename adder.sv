@@ -1,5 +1,3 @@
-`timescale 1ns/1ns
-
 module adder(inLhs, inRhs, out);
 parameter WIDTH = 32;
 

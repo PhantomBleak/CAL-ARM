@@ -10,10 +10,19 @@ logic [7:0] ROM[0:1023];
 
 assign instruction = {ROM[address + 3], ROM[address + 2], ROM[address + 1], ROM[address]};
 
-integer j;
+integer fileDescriptor;
+integer i;
+logic [31:0]tempValue;
 initial begin
-	for(j = 0; j < 1024; j = j + 1)
-		ROM[j] = j % 256;
+	i = 0;
+	fileDescriptor = $fopen("instructions.txt", "r");
+
+	while(!$feof(fileDescriptor)) begin
+		$fscanf(fileDescriptor, "%b\n", tempValue);
+		{ROM[i + 3], ROM[i + 2], ROM[i + 1], ROM[i]} = tempValue;
+		i = i + 4;
+	end
+	$fclose(fileDescriptor);
 end
 
 endmodule

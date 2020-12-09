@@ -3,10 +3,10 @@ module shiftAndSignExtend(signedImmediate, extendedImmediate);
 
   output [31:0]extendedImmediate;
 
-  logic [23:0]temp;
+  logic [31:0]temp;
 
-  assign temp = signedImmediate << 2;
-  assign extendedImmediate = (temp[23]) ? {8'b11111111, temp} : {8'b00000000, temp};
+  assign temp = (signedImmediate[23]) ? {8'b11111111, signedImmediate} : {8'b00000000, signedImmediate};
+  assign extendedImmediate = temp << 2;
 
 endmodule
 
@@ -17,7 +17,7 @@ module branchAddressGenerator(signedImmediate, PC, branchAddress);
   output [31:0]branchAddress;
 
   logic [31:0]extendedImmediate;
-  shiftAndSignExtend(signedImmediate, extendedImmediate);
+  shiftAndSignExtend shiftAndSignExtend(signedImmediate, extendedImmediate);
 
   assign branchAddress = PC + extendedImmediate + 4;
 

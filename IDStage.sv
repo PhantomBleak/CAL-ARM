@@ -1,13 +1,13 @@
 module IDStage(rst, clk, instruction, PCIn, flush, statusRegister, WB_EN, WBDest, WBValue, hazard,
   RnAddress, RmAddress, Two_src, dest, branchImm, I, shiftOperand, RmValue, RnValue, PC, S, B, EXE_CMD,
-  MEM_W_EN, MEM_R_EN, WB_EN_OUT);
+  MEM_W_EN, MEM_R_EN, WB_EN_OUT, carry);
 
   input clk, rst, flush, WB_EN, hazard;
   input [31:0]instruction, PCIn, WBValue;
   input [3:0]statusRegister, WBDest;
 
   output [3:0]RnAddress, RmAddress, dest, EXE_CMD;
-  output Two_src, I, S, B, MEM_W_EN, MEM_R_EN, WB_EN_OUT;
+  output Two_src, I, S, B, MEM_W_EN, MEM_R_EN, WB_EN_OUT, carry;
   output [23:0]branchImm;
   output [11:0]shiftOperand;
   output [31:0]RmValue, RnValue, PC;
@@ -22,7 +22,7 @@ module IDStage(rst, clk, instruction, PCIn, flush, statusRegister, WB_EN, WBDest
   assign Two_src = (~instruction[25]) | internalMEM_W_EN;
 
   logic [31:0]internalRnValue, internalRmValue;
-  registerFile RegisterFile(rst, clk, WB_EN, RnAddress, RmAddress, WBDest, WBValue,
+  registerFile RegisterFile(clk, WB_EN, RnAddress, RmAddress, WBDest, WBValue,
                             internalRnValue, internalRmValue);
 
   logic condition;
@@ -40,7 +40,7 @@ module IDStage(rst, clk, instruction, PCIn, flush, statusRegister, WB_EN, WBDest
 
   IDRegister IDRegister(rst, clk, flush, instruction[15:12], instruction[23:0], instruction[25],
                         instruction[11:0], internalRmValue, internalRnValue, PCIn, tempS, tempB, tempEXE_CMD, tempMEM_W_EN,
-                        tempMEM_R_EN, tempWB_EN, dest, branchImm, I, shiftOperand, RmValue, RnValue, PC, S, B, EXE_CMD,
-                        MEM_W_EN, MEM_R_EN, WB_EN_OUT);
+                        tempMEM_R_EN, tempWB_EN, statusRegister[1], dest, branchImm, I, shiftOperand, RmValue, RnValue, PC, S, B, EXE_CMD,
+                        MEM_W_EN, MEM_R_EN, WB_EN_OUT, carry);
 
   endmodule
